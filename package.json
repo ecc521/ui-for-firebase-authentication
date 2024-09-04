@@ -2,7 +2,7 @@
   "name": "ui-for-firebase-authentication",
   "version": "1.0.0",
   "description": "UI for Firebase Authentication (Firebase UI alternative supporting v9+)",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "scripts": {},
   "repository": {
     "type": "git",
@@ -12,6 +12,7 @@
     "Firebase",
     "UI"
   ],
+  "type": "module",
   "author": "Tucker Willenborg",
   "license": "MIT",
   "bugs": {
@@ -22,6 +23,7 @@
     "firebase": "^10.13.1"
   },
   "devDependencies": {
-    "typedoc": "^0.26.6"
+    "typedoc": "^0.26.6",
+    "typescript": "^5.5.4"
   }
 }
