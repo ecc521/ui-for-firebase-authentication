@@ -2,9 +2,8 @@
   "name": "ui-for-firebase-authentication",
   "version": "1.0.0",
   "description": "UI for Firebase Authentication (Firebase UI alternative supporting v9+)",
-  "main": "index.js",
-  "scripts": {
-  },
+  "main": "src/index.ts",
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ecc521/ui-for-firebase-authentication.git"
@@ -18,5 +17,11 @@
   "bugs": {
     "url": "https://github.com/ecc521/ui-for-firebase-authentication/issues"
   },
-  "homepage": "https://github.com/ecc521/ui-for-firebase-authentication#readme"
+  "homepage": "https://github.com/ecc521/ui-for-firebase-authentication#readme",
+  "dependencies": {
+    "firebase": "^10.13.1"
+  },
+  "devDependencies": {
+    "typedoc": "^0.26.6"
+  }
 }
