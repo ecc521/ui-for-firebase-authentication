@@ -14,5 +14,6 @@ import {SignInOptionDisplay} from "./SignInOptionDisplay"
 import {SignInOption} from "./SignInOption";
 
 import {Initialize_UI} from "./ui_manager";
+import { injectDefaultStyles } from "./injectDefaultStyles"
 
-export {Initialize_UI, Display_Templates, SignInOption, SignInOptionDisplay }
+export {Initialize_UI, Display_Templates, SignInOption, SignInOptionDisplay, injectDefaultStyles }

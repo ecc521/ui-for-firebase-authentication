@@ -17,6 +17,8 @@ class PasswordEntryBox {
     this.input.minLength = minLength
     this.input.placeholder = placeholder
     this.input.autocomplete = autoComplete
+    this.input.setAttribute("required", "required")
+
 
     //Checkbox to hide / show the password.
     let randomId = "passwordVisibilityToggle" + Math.random().toString(36).substring(2)

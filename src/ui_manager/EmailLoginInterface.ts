@@ -6,6 +6,7 @@ import {
   Auth
 } from "firebase/auth";
 import { PasswordEntryBox, PasswordConfirmingUnit } from "./passwordUIClasses";
+import {handleFirebasePromise} from "../firebasePromiseResults";
 
 
 //We JUST need a password form for changing passwords.
@@ -16,6 +17,8 @@ class EmailLoginInterface {
 
   emailEntryForm = document.createElement("form") //Form used to choose the email being used.
   auth: Auth = null //Firebase Auth instance
+
+  onClose = null //Callback to be called when the interface is closed.
 
   constructor(auth: Auth) {
     this.auth = auth
@@ -31,6 +34,7 @@ class EmailLoginInterface {
     emailInput.type = "email"
     emailInput.placeholder = "Enter Email..."
     emailInput.autocomplete = "email"
+    emailInput.setAttribute("required", "required")
     // emailInput.addEventListener("keyup", (function(keyEvent) {
     // 	if (keyEvent.key === "Enter") {
     // 		this.emailEntryForm.requestSubmit()
@@ -51,6 +55,7 @@ class EmailLoginInterface {
     cancelButton.innerHTML = "Cancel"
     cancelButton.addEventListener("click", (function() {
       this.container.remove()
+      this?.onClose()
     }).bind(this))
     this.emailEntryForm.appendChild(cancelButton)
 
@@ -138,7 +143,7 @@ class EmailLoginInterface {
       e.preventDefault()
       history.replaceState(null, "") //Emulate a navigation.
       if (loginProviders.includes("password")) {
-        handleFirebasePromise(signInWithEmailAndPassword(this.auth, emailAddress, passwordUnit.getValue()))
+        handleFirebasePromise(signInWithEmailAndPassword(this.auth, emailAddress, passwordUnit.getValue()));
       }
       else {
         handleFirebasePromise(createUserWithEmailAndPassword(this.auth, emailAddress, passwordUnit.getValue()))
@@ -159,40 +164,6 @@ class EmailLoginInterface {
   }
 }
 
-
-
-async function handleFirebasePromise(prom) {
-  //Handle common Firebase error codes.
-  try {
-    let res = await prom
-    console.log(res)
-  }
-  catch (e) {
-    if (e.code === "auth/user-not-found") {
-      alert("No user found with selected email. ")
-    }
-    else if (e.code === "auth/unauthorized-domain") {
-      alert("Error from Auth Provider: Unauthorized Domain")
-    }
-    else if (e.code === "auth/weak-password") {
-      alert("Password too weak - must be at least 6 characters. ")
-    }
-    else if (e.code === "auth/wrong-password") {
-      alert("Incorrect Password. ")
-    }
-    else if (e.code === "auth/too-many-requests") {
-      alert("Too many requests. You can reset your password or try again later. ")
-    }
-    else if (e.code === "auth/requires-recent-login") {
-      //Use reauthenticateWithCredential??
-      alert("You must sign in again before you can perform this action. ")
-    }
-    else {
-      console.error(e)
-      alert("Unknown Error from Auth Provider: " + e.message)
-    }
-  }
-}
 
 
 export {EmailLoginInterface}

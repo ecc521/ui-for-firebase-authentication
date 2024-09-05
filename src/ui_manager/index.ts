@@ -3,6 +3,7 @@ import {SignInOption} from "../SignInOption";
 import { signInWithPopup } from "firebase/auth";
 import {createButtonForProvider} from "./createProviderButton";
 import {EmailLoginInterface} from "./EmailLoginInterface";
+import {handleFirebasePromise} from "../firebasePromiseResults";
 
 
 /**
@@ -15,9 +16,7 @@ import {EmailLoginInterface} from "./EmailLoginInterface";
 function Initialize_UI(auth: Auth, signInOptions: SignInOption[], targetElement: HTMLElement) {
 
   //Empty the target element.
-  while (targetElement.firstChild) {
-    targetElement.firstChild.remove()
-  }
+  while (targetElement.lastChild) {targetElement.lastChild.remove()}
 
   if (signInOptions.length === 0) {
     throw new Error("No sign in options provided. ")
@@ -30,10 +29,17 @@ function Initialize_UI(auth: Auth, signInOptions: SignInOption[], targetElement:
 
     button.addEventListener("click", function() {
       if (signInOption.provider !== "email") {
-        signInWithPopup(auth, signInOption.provider)
+        handleFirebasePromise(signInWithPopup(auth, signInOption.provider))
       }
       else {
-        targetElement.appendChild(new EmailLoginInterface(auth).container)
+        //We will pass this element over to the email login interface.
+        //After the email login interface closes, we will recurse and regenerate the UI
+        let emailLoginInterface = new EmailLoginInterface(auth)
+        while (targetElement.lastChild) {targetElement.lastChild.remove()}
+        targetElement.appendChild(emailLoginInterface.container)
+        emailLoginInterface.onClose = function() {
+          Initialize_UI(auth, signInOptions, targetElement)
+        }
       }
     })
   }
