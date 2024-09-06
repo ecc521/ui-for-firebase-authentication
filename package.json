@@ -12,18 +12,17 @@
     "Firebase",
     "UI"
   ],
-  "type": "module",
   "author": "Tucker Willenborg",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ecc521/ui-for-firebase-authentication/issues"
   },
   "homepage": "https://github.com/ecc521/ui-for-firebase-authentication#readme",
-  "dependencies": {
-    "firebase": "^10.13.1"
-  },
   "devDependencies": {
     "typedoc": "^0.26.6",
     "typescript": "^5.5.4"
+  },
+  "peerDependencies": {
+    "firebase": "^10.13.1"
   }
 }

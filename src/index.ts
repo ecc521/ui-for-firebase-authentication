@@ -1,12 +1,3 @@
-import { signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, fetchSignInMethodsForEmail } from "firebase/auth";
-
-//We will need the
-
-
-
-
-
-
 //Users can supply their own providers. Some providers are available by default.
 
 import {Display_Templates} from "./Display_Templates"

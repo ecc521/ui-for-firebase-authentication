@@ -1,10 +1,8 @@
-import {Auth} from "firebase/auth";
+import {Auth, signInWithPopup} from "firebase/auth";
 import {SignInOption} from "../SignInOption";
-import { signInWithPopup } from "firebase/auth";
 import {createButtonForProvider} from "./createProviderButton";
 import {EmailLoginInterface} from "./EmailLoginInterface";
 import {handleFirebasePromise} from "../firebasePromiseResults";
-
 
 /**
  * Initializes the sign in UI. This will render the sign in options into the target element.
@@ -22,10 +20,14 @@ function Initialize_UI(auth: Auth, signInOptions: SignInOption[], targetElement:
     throw new Error("No sign in options provided. ")
   }
 
+  let buttonContainer = document.createElement("div")
+  buttonContainer.classList.add("loginProviderButtonContainer")
+  targetElement.appendChild(buttonContainer)
+
   //Create the buttons for sign in.
   for (let signInOption of signInOptions) {
     let button = createButtonForProvider(signInOption)
-    targetElement.appendChild(button)
+    buttonContainer.appendChild(button)
 
     button.addEventListener("click", function() {
       if (signInOption.provider !== "email") {
@@ -35,8 +37,7 @@ function Initialize_UI(auth: Auth, signInOptions: SignInOption[], targetElement:
         //We will pass this element over to the email login interface.
         //After the email login interface closes, we will recurse and regenerate the UI
         let emailLoginInterface = new EmailLoginInterface(auth)
-        while (targetElement.lastChild) {targetElement.lastChild.remove()}
-        targetElement.appendChild(emailLoginInterface.container)
+        buttonContainer.appendChild(emailLoginInterface.container)
         emailLoginInterface.onClose = function() {
           Initialize_UI(auth, signInOptions, targetElement)
         }

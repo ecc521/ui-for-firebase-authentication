@@ -12,6 +12,18 @@ function createEmptyStylesheet() {
 function injectDefaultStyles() {
   let stylesheetTarget = createEmptyStylesheet()
 
+  let maxButtonWidth = 250
+
+  stylesheetTarget.insertRule(`
+    .loginProviderButtonContainer {
+      display: inline-block;
+      margin: auto;
+      width: 100%;
+      max-width: ${maxButtonWidth}px;
+      position: relative;
+    }
+  `)
+
   stylesheetTarget.insertRule(`
     .loginProviderButton {
       cursor: pointer;
@@ -19,7 +31,7 @@ function injectDefaultStyles() {
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      max-width: 250px;
+      max-width: ${maxButtonWidth}px;
       border: 2px solid grey;
       padding: 8px;
       border-radius: 4px;
@@ -43,6 +55,17 @@ function injectDefaultStyles() {
     .loginProviderButton span {
       font-weight: bold;
       width: 100%;
+    }
+  `)
+
+  stylesheetTarget.insertRule(`
+    .emailLoginInterface {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
     }
   `)
 }

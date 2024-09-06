@@ -1,10 +1,4 @@
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  sendPasswordResetEmail,
-  fetchSignInMethodsForEmail,
-  Auth
-} from "firebase/auth";
+import {signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, fetchSignInMethodsForEmail, Auth} from "firebase/auth";
 import { PasswordEntryBox, PasswordConfirmingUnit } from "./passwordUIClasses";
 import {handleFirebasePromise} from "../firebasePromiseResults";
 
