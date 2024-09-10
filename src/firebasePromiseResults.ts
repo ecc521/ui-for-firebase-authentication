@@ -1,3 +1,5 @@
+import {UserCredential} from "firebase/auth";
+
 const codeMap = {
   //User errors
   "auth/user-not-found": "No user found with selected email",
@@ -15,41 +17,30 @@ const codeMap = {
 }
 
 
-
-async function handleFirebasePromise(prom) {
-  //If the Firebase promise returns successfully then we should assume that the form will simply be hidden
-  // TODO: Occasional issues with form submission when the form is deleted immediately after???
-
+async function getFirebaseResultOrErrorMessage(prom: Promise<UserCredential>) {
   try {
-    let res = await prom
-    console.log(res)
+    return await prom
   }
   catch (e) {
-    if (e.code === "")
-    if (e.code === "auth/user-not-found") {
-      alert("No user found with selected email. ")
-    }
-    else if (e.code === "auth/unauthorized-domain") {
-      alert("Error from Auth Provider: Unauthorized Domain")
-    }
-    else if (e.code === "auth/weak-password") {
-      alert("Password too weak - must be at least 6 characters. ")
-    }
-    else if (e.code === "auth/wrong-password") {
-      alert("Incorrect Password. ")
-    }
-    else if (e.code === "auth/too-many-requests") {
-      alert("Too many requests. You can reset your password or try again later. ")
-    }
-    else if (e.code === "auth/requires-recent-login") {
-      //Use reauthenticateWithCredential??
-      alert("You must sign in again before you can perform this action. ")
+    if (codeMap[e.code]) {
+      return codeMap[e.code]
     }
     else {
-      console.error(e)
-      alert("Unknown Error from Auth Provider: " + e.message)
+      return `Unknown Error ${e.message}`
     }
   }
 }
 
-export { handleFirebasePromise }
+
+async function handleFirebasePromise(prom) {
+  //This function should be phased out and removed.
+  let res = await getFirebaseResultOrErrorMessage(prom)
+  if (typeof res === "string") {
+    alert(res)
+  }
+  else {
+    return res
+  }
+}
+
+export { handleFirebasePromise, getFirebaseResultOrErrorMessage }

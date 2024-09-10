@@ -1,6 +1,6 @@
 import {signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, fetchSignInMethodsForEmail, Auth} from "firebase/auth";
 import { PasswordEntryBox, PasswordConfirmingUnit } from "./passwordUIClasses";
-import {handleFirebasePromise} from "../firebasePromiseResults";
+import {getFirebaseResultOrErrorMessage} from "../firebasePromiseResults";
 import {wrapInputElement} from "./floatingInputWrapper";
 
 
@@ -30,24 +30,19 @@ class EmailLoginInterface {
     emailInput.placeholder = "Enter Email..."
     emailInput.autocomplete = "email"
     emailInput.setAttribute("required", "required")
-    // emailInput.addEventListener("keyup", (function(keyEvent) {
-    // 	if (keyEvent.key === "Enter") {
-    // 		this.emailEntryForm.requestSubmit()
-    // 	}
-    // }).bind(this))
 
     this.emailEntryForm.appendChild(wrapInputElement(emailInput))
 
 
     let continueButton = document.createElement("button")
     continueButton.innerHTML = "Continue"
-    // continueButton.addEventListener("click", (function() {
-    // 	this.emailEntryForm.requestSubmit()
-    // }).bind(this))
+    continueButton.classList.add("loginFlowButton")
     this.emailEntryForm.appendChild(continueButton)
 
     let cancelButton = document.createElement("button")
+    cancelButton.classList.add("loginFlowButton")
     cancelButton.innerHTML = "Cancel"
+    cancelButton.type = "button"
     cancelButton.addEventListener("click", (function() {
       this.container.remove()
       this?.onClose()
@@ -79,13 +74,6 @@ class EmailLoginInterface {
       return;
     }
 
-    if (loginProviders.length > 0 && !loginProviders.includes("password")) {
-      //The user cannot log in with email password.
-      let message = `This account has no password. You must use a social login (previously used ${loginProviders.join(", ")})`
-      alert(message)
-      return
-    }
-
     this.clearContainer()
 
     let loginSubmissionForm = document.createElement("form")
@@ -100,9 +88,42 @@ class EmailLoginInterface {
     loginSubmissionForm.appendChild(wrapInputElement(emailDisplayInput))
 
     let submitButton = document.createElement("button")
+    submitButton.classList.add("loginFlowButton")
+
+
+    //Button to back out and change email
+    let backButton = document.createElement("button")
+    backButton.innerText = "Back"
+    backButton.classList.add("loginFlowButton")
+    backButton.type = "button"
+    backButton.addEventListener("click", (function() {
+      this.requestEmail()
+    }).bind(this))
+
+    //Reset Password Button
+    let resetPasswordButton = document.createElement("button")
+    resetPasswordButton.classList.add("resetPasswordButton")
+    resetPasswordButton.innerHTML = "Reset Password"
+    resetPasswordButton.addEventListener("click", (function() {
+      sendPasswordResetEmail(this.auth, emailAddress)
+      errorMessage.innerText = `Password Reset Email Sent to ${emailAddress}. `
+    }).bind(this))
+
+    let errorMessage = document.createElement("div")
+    errorMessage.classList.add("loginErrorMessage")
 
     let passwordUnit;
-    if (loginProviders.includes("password")) {
+
+    if (loginProviders.length === 0) {
+      //Bring up the create password form
+      submitButton.innerText = "Sign Up"
+      passwordUnit = new PasswordConfirmingUnit({
+        hidden: true,
+        minLength: 6,
+        autoComplete: "new-password"
+      })
+    }
+    else {
       //Bring up the email password form.
       submitButton.innerText = "Log In"
       passwordUnit = new PasswordEntryBox({
@@ -111,50 +132,46 @@ class EmailLoginInterface {
         autoComplete: "current-password",
         placeholder: "Enter Password..."
       })
-      loginSubmissionForm.appendChild(passwordUnit.container)
-
-      //Forgot Password Button
-      let forgotPasswordButton = document.createElement("button")
-      forgotPasswordButton.innerHTML = "Forgot Password"
-      forgotPasswordButton.addEventListener("click", (function() {
-        sendPasswordResetEmail(this.auth, emailAddress)
-        alert("Password Reset Email Sent")
-      }).bind(this))
-      loginSubmissionForm.appendChild(forgotPasswordButton)
     }
-    else if (loginProviders.length === 0) {
-      //Bring up the create password form
-      submitButton.innerText = "Sign Up"
-      passwordUnit = new PasswordConfirmingUnit({
-        hidden: true,
-        minLength: 6,
-        autoComplete: "new-password"
-      })
-      loginSubmissionForm.appendChild(passwordUnit.container)
+    loginSubmissionForm.appendChild(passwordUnit.container)
+
+
+    if (!loginProviders.includes("password")) {
+      //Include warning that user must reset password before they can log in.
+      errorMessage.innerText = "This account has no password. You must reset your password before you can log in."
     }
 
     loginSubmissionForm.addEventListener("submit", (function(e) {
       console.warn("Submitted")
+      errorMessage.innerText = ""
       e.preventDefault()
       history.replaceState(null, "") //Emulate a navigation.
+      let firebasePromise;
       if (loginProviders.includes("password")) {
-        handleFirebasePromise(signInWithEmailAndPassword(this.auth, emailAddress, passwordUnit.getValue()));
+        firebasePromise = signInWithEmailAndPassword(this.auth, emailAddress, passwordUnit.getValue());
       }
       else {
-        handleFirebasePromise(createUserWithEmailAndPassword(this.auth, emailAddress, passwordUnit.getValue()))
+        firebasePromise = createUserWithEmailAndPassword(this.auth, emailAddress, passwordUnit.getValue());
       }
+
+      getFirebaseResultOrErrorMessage(firebasePromise).then((res) => {
+        if (typeof res === "string") {
+          errorMessage.innerText = res
+        }
+        else {
+          errorMessage.innerText = ""
+        }
+      })
+
     }).bind(this))
 
 
     loginSubmissionForm.appendChild(submitButton)
 
-    //Button to back out and change email
-    let backButton = document.createElement("button")
-    backButton.innerText = "Back"
-    backButton.addEventListener("click", (function() {
-      this.requestEmail()
-    }).bind(this))
     loginSubmissionForm.appendChild(backButton)
+    loginSubmissionForm.appendChild(resetPasswordButton)
+
+    loginSubmissionForm.appendChild(errorMessage)
 
   }
 }

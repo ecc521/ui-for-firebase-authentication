@@ -2,6 +2,16 @@
 
 ### Alternative to Firebase UI supporting Firebase v9+ 
 
+Email Enumeration Protection MUST be disabled for this plugin to work. This plugin relies on email enumerating features to mimic FirebaseUI behavior. 
+
+
+Not yet implemented:
+- Custom password strength requirements (only minimum length supported)
+- Phone & Email Link Authentication
+- 2FA
+
+Test cases have not yet been constructed. 
+
 
 ## Installation
 
@@ -23,7 +33,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)
 
 //Now initialize the UI package with the auth module. 
-import { initializeUI } from "ui-for-firebase-authentication";
+import { initializeUI, injectDefaultStyles } from "ui-for-firebase-authentication";
+
+injectDefaultStyles(); //Adds the default CSS for the sign in UI to the document. This uses CSSStyleSheet so will not violate CSP. 
 
 //Provide a target div in which the UI will be rendered.
 let targetDiv = document.createElement("div");
@@ -32,10 +44,3 @@ let targetDiv = document.createElement("div");
 
 initializeUI(auth, targetDiv);
 ```
-
-A few notes:
-The UI only handles the sign-in flow. It should be removed or hidden after the user has signed in.
-If the user needs to reauthenticate, initializeUI should be called again to initialize the UI.
-
-
-TODO: Test cases, phone number authentication, UI cleanup

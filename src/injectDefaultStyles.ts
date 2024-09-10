@@ -68,6 +68,30 @@ function injectDefaultStyles() {
   }`)
 
 
+  stylesheetTarget.insertRule(`
+  .resetPasswordButton {
+    background: none;
+    border: none;
+    color: darkblue;
+    padding: 0;
+  }
+  `)
+
+  stylesheetTarget.insertRule(`
+  .loginErrorMessage {
+    color: red;
+    margin-top: 8px;
+  }
+  `)
+
+  stylesheetTarget.insertRule(`
+  .loginFlowButton {
+    font-size: 1em;
+    margin-top: 8px;
+    margin-right: 8px;
+  }
+  `)
+
 
 
 
