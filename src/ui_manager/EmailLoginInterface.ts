@@ -100,10 +100,10 @@ class EmailLoginInterface {
       this.requestEmail()
     }).bind(this))
 
-    //Reset Password Button
     let resetPasswordButton = document.createElement("button")
     resetPasswordButton.classList.add("resetPasswordButton")
     resetPasswordButton.innerHTML = "Reset Password"
+    resetPasswordButton.type = "button"
     resetPasswordButton.addEventListener("click", (function() {
       sendPasswordResetEmail(this.auth, emailAddress)
       errorMessage.innerText = `Password Reset Email Sent to ${emailAddress}. `
@@ -136,7 +136,7 @@ class EmailLoginInterface {
     loginSubmissionForm.appendChild(passwordUnit.container)
 
 
-    if (!loginProviders.includes("password")) {
+    if (!loginProviders.includes("password") && loginProviders.length > 0) {
       //Include warning that user must reset password before they can log in.
       errorMessage.innerText = "This account has no password. You must reset your password before you can log in."
     }
@@ -169,7 +169,12 @@ class EmailLoginInterface {
     loginSubmissionForm.appendChild(submitButton)
 
     loginSubmissionForm.appendChild(backButton)
-    loginSubmissionForm.appendChild(resetPasswordButton)
+
+    //Reset Password Button
+    if (loginProviders.length > 0) {
+      //No need to reset password if this account hasn't been created yet. 
+      loginSubmissionForm.appendChild(resetPasswordButton)
+    }
 
     loginSubmissionForm.appendChild(errorMessage)
 
