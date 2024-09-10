@@ -13,34 +13,37 @@ import {handleFirebasePromise} from "../firebasePromiseResults";
  * */
 function Initialize_UI(auth: Auth, signInOptions: SignInOption[], targetElement: HTMLElement) {
 
-  //Empty the target element.
-  while (targetElement.lastChild) {targetElement.lastChild.remove()}
-
   if (signInOptions.length === 0) {
     throw new Error("No sign in options provided. ")
   }
 
-  let buttonContainer = document.createElement("div")
-  buttonContainer.classList.add("loginProviderButtonContainer")
-  targetElement.appendChild(buttonContainer)
+  //Clear the target element
+  while (targetElement.lastChild) {targetElement.lastChild.remove()}
+
+  let mainContainer = document.createElement("div")
+  mainContainer.classList.add("uiForFirebaseLoginContainer")
+  targetElement.appendChild(mainContainer)
+
 
   //Create the buttons for sign in.
   for (let signInOption of signInOptions) {
     let button = createButtonForProvider(signInOption)
-    buttonContainer.appendChild(button)
+    mainContainer.appendChild(button)
 
     button.addEventListener("click", function() {
-      if (signInOption.provider !== "email") {
-        handleFirebasePromise(signInWithPopup(auth, signInOption.provider))
-      }
-      else {
+      if (signInOption.provider === "email") {
         //We will pass this element over to the email login interface.
         //After the email login interface closes, we will recurse and regenerate the UI
+        while (mainContainer.lastChild) {mainContainer.lastChild.remove()}
+
         let emailLoginInterface = new EmailLoginInterface(auth)
-        buttonContainer.appendChild(emailLoginInterface.container)
+        mainContainer.appendChild(emailLoginInterface.container)
         emailLoginInterface.onClose = function() {
           Initialize_UI(auth, signInOptions, targetElement)
         }
+      }
+      else {
+        handleFirebasePromise(signInWithPopup(auth, signInOption.provider))
       }
     })
   }

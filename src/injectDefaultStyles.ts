@@ -1,5 +1,5 @@
 function createEmptyStylesheet() {
-  let appendToTarget = document.body ?? document.head ?? document.documentElement
+  let appendToTarget = document.head ?? document.body ?? document.documentElement
 
   let ourStyleSheet = document.createElement("style")
   ourStyleSheet.title = "defaultStylesUIForFirebaseAuth"
@@ -13,14 +13,16 @@ function injectDefaultStyles() {
   let stylesheetTarget = createEmptyStylesheet()
 
   let maxButtonWidth = 250
+  let paddingAmt = 16
 
   stylesheetTarget.insertRule(`
-    .loginProviderButtonContainer {
+    .uiForFirebaseLoginContainer {
       display: inline-block;
       margin: auto;
       width: 100%;
       max-width: ${maxButtonWidth}px;
       position: relative;
+      padding: ${paddingAmt}px;
     }
   `)
 
@@ -59,15 +61,80 @@ function injectDefaultStyles() {
   `)
 
   stylesheetTarget.insertRule(`
-    .emailLoginInterface {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: white;
+  .passwordEntryContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }`)
+
+
+
+
+
+  //New styles for floating inputs
+
+  stylesheetTarget.insertRule(`
+    .floatingInputWrapper {
+      position: relative;
+      margin-top: 20px;
+      max-width: 400px;
+      width: 100%;
     }
   `)
+
+  stylesheetTarget.insertRule(`
+.floatingInput {
+    font-size: 1em;
+    width: 100%;
+    padding: 8px 0;
+    color: #333;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    transition: border-color 250ms;
+    background-color: transparent;
+  }
+  `)
+
+  stylesheetTarget.insertRule(`
+    .floatingInput:focus {
+      outline: none;
+      border-bottom-color: #777;
+    }
+  `)
+
+  stylesheetTarget.insertRule(`
+    .floatingInput::placeholder {
+      color: transparent;
+    }
+  `)
+
+  stylesheetTarget.insertRule(`
+    .floatingInput::-webkit-contacts-auto-fill-button {
+      visibility: hidden;
+      pointer-events: none;
+      position: absolute;
+    }
+  `)
+
+  stylesheetTarget.insertRule(`
+.floatingLabel {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    color: #43454e;
+    pointer-events: none;
+    transform-origin: left center;
+    transition: transform 250ms;
+    font-family: "Iowan Old Style", "Palatino Linotype", "URW Palladio L", P052,
+        serif;
+  }
+  `)
+
+      stylesheetTarget.insertRule(`
+      .floatingInput:focus + .floatingLabel, .floatingInput:not(:placeholder-shown) + .floatingLabel {
+    transform: translateY(-100%) scale(0.75);
+  }
+      `)
 }
 
 

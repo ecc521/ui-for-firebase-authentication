@@ -1,5 +1,7 @@
 //@ts-nocheck
 
+import {wrapInputElement} from "./floatingInputWrapper";
+
 class AutoCompleteValues {
   static CURRENT_PASSWORD = "current-password"
   static NEW_PASSWORD = "new-password"
@@ -19,6 +21,8 @@ class PasswordEntryBox {
     this.input.autocomplete = autoComplete
     this.input.setAttribute("required", "required")
 
+    this.container.classList.add("passwordEntryContainer")
+
 
     //Checkbox to hide / show the password.
     let randomId = "passwordVisibilityToggle" + Math.random().toString(36).substring(2)
@@ -35,7 +39,7 @@ class PasswordEntryBox {
     this._hideShowLabel.innerText = "Show"
     this._hideShowLabel.style.verticalAlign = "middle"
 
-    this.container.appendChild(this.input)
+    this.container.appendChild(wrapInputElement(this.input))
     this.container.appendChild(this._hideShowButton)
     this.container.appendChild(this._hideShowLabel)
 

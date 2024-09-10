@@ -32,3 +32,10 @@ let targetDiv = document.createElement("div");
 
 initializeUI(auth, targetDiv);
 ```
+
+A few notes:
+The UI only handles the sign-in flow. It should be removed or hidden after the user has signed in.
+If the user needs to reauthenticate, initializeUI should be called again to initialize the UI.
+
+
+TODO: Test cases, phone number authentication, UI cleanup

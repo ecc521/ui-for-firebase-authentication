@@ -1,6 +1,7 @@
 import {signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, fetchSignInMethodsForEmail, Auth} from "firebase/auth";
 import { PasswordEntryBox, PasswordConfirmingUnit } from "./passwordUIClasses";
 import {handleFirebasePromise} from "../firebasePromiseResults";
+import {wrapInputElement} from "./floatingInputWrapper";
 
 
 //We JUST need a password form for changing passwords.
@@ -35,7 +36,7 @@ class EmailLoginInterface {
     // 	}
     // }).bind(this))
 
-    this.emailEntryForm.appendChild(emailInput)
+    this.emailEntryForm.appendChild(wrapInputElement(emailInput))
 
 
     let continueButton = document.createElement("button")
@@ -96,7 +97,7 @@ class EmailLoginInterface {
     emailDisplayInput.autocomplete = "email"
     emailDisplayInput.value = emailAddress
     emailDisplayInput.setAttribute("readonly", "readonly")
-    loginSubmissionForm.appendChild(emailDisplayInput)
+    loginSubmissionForm.appendChild(wrapInputElement(emailDisplayInput))
 
     let submitButton = document.createElement("button")
 
