@@ -142,7 +142,6 @@ class EmailLoginInterface {
     }
 
     loginSubmissionForm.addEventListener("submit", (function(e) {
-      console.warn("Submitted")
       errorMessage.innerText = ""
       e.preventDefault()
       history.replaceState(null, "") //Emulate a navigation.
