@@ -28,7 +28,7 @@ class EmailLoginInterface {
     let emailInput = document.createElement("input")
     emailInput.type = "email"
     emailInput.placeholder = "Enter Email..."
-    emailInput.autocomplete = "email"
+    emailInput.autocomplete = "username"
     emailInput.setAttribute("required", "required")
 
     this.emailEntryForm.appendChild(wrapInputElement(emailInput))
@@ -82,7 +82,7 @@ class EmailLoginInterface {
 
     let emailDisplayInput = document.createElement("input")
     emailDisplayInput.type = "email"
-    emailDisplayInput.autocomplete = "email"
+    emailDisplayInput.autocomplete = "username"
     emailDisplayInput.value = emailAddress
     emailDisplayInput.setAttribute("readonly", "readonly")
     loginSubmissionForm.appendChild(wrapInputElement(emailDisplayInput))
@@ -172,7 +172,7 @@ class EmailLoginInterface {
 
     //Reset Password Button
     if (loginProviders.length > 0) {
-      //No need to reset password if this account hasn't been created yet. 
+      //No need to reset password if this account hasn't been created yet.
       loginSubmissionForm.appendChild(resetPasswordButton)
     }
 
