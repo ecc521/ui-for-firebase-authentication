@@ -14,6 +14,7 @@ Not yet available (Pull Requests welcome):
 - Custom password strength requirements (only minimum length supported)
 - Phone & Email Link Authentication
 - 2FA
+- Localization
 
 
 
