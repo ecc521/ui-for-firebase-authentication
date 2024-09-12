@@ -1,16 +1,20 @@
 # UI for Firebase Authentication
 
-### Alternative to Firebase UI supporting Firebase v9+ 
+### Alternative to Firebase UI supporting Firebase v9+. 
 
-Email Enumeration Protection MUST be disabled for this plugin to work. This plugin relies on email enumerating features to mimic FirebaseUI behavior. 
+Key Features:
+- Support for Firebase v9+
+
+Requirements:
+- Email Enumeration Protection is **NOT** supported, and must be disabled for this plugin to work
+  - This requirement is in place to allow for transferring users from the sign-in flow to the sign-up flow if the account does not exist. 
 
 
-Not yet implemented:
+Not yet available (Pull Requests welcome):
 - Custom password strength requirements (only minimum length supported)
 - Phone & Email Link Authentication
 - 2FA
 
-Test cases have not yet been constructed. 
 
 
 ## Installation
@@ -19,7 +23,9 @@ Test cases have not yet been constructed.
 
 ## Usage
 
+### Step 1: Initialize Firebase
 ```javascript
+//First, initialize Firebase.
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
@@ -28,19 +34,43 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
-//Accounts
 const auth = getAuth(app)
+```
 
+### Step 2: Create the UI Component
+```javascript
 //Now initialize the UI package with the auth module. 
-import { initializeUI, injectDefaultStyles } from "ui-for-firebase-authentication";
+import { initializeUI, injectDefaultStyles, Display_Templates } from "ui-for-firebase-authentication";
 
 injectDefaultStyles(); //Adds the default CSS for the sign in UI to the document. This uses CSSStyleSheet so will not violate CSP. 
 
-//Provide a target div in which the UI will be rendered.
-let targetDiv = document.createElement("div");
+//Provide a target element in which the UI will be rendered. Contents of the target element may be cleared. 
+let targetElement = document.createElement("div");
 
 //Provide SignInOption(s) to render. You can use templates to help with this. 
+let googleProvider = new GoogleAuthProvider()
+let appleProvider = new OAuthProvider()
+let facebookProvider = new FacebookAuthProvider()
 
-initializeUI(auth, targetDiv);
+//Add scopes that you want to request. 
+googleProvider.addScope("https://www.googleapis.com/auth/userinfo.email")
+appleProvider.addScope("email")
+facebookProvider.addScope("email")
+
+let providers = [
+  {
+    provider: googleProvider,
+    display: Display_Templates.Google_Light
+  },
+  {
+    provider: appleProvider,
+    display: Display_Templates.Apple_Dark
+  },
+  {
+    provider: "email",
+    display: Display_Templates.Email_Dark
+  },
+]
+
+initializeUI(auth, providers, targetElement);
 ```
