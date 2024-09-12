@@ -3,7 +3,7 @@
 ### Alternative to Firebase UI supporting Firebase v9+. 
 
 Key Features:
-- Support for Firebase v9+
+- Support for Firebase v9+ (modular SDK)
 
 Requirements:
 - Email Enumeration Protection is **NOT** supported, and must be disabled for this plugin to work
