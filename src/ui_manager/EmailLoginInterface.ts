@@ -1,7 +1,6 @@
-import {signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, fetchSignInMethodsForEmail, Auth} from "firebase/auth";
 import { PasswordEntryBox, PasswordConfirmingUnit } from "./passwordUIClasses";
-import {getFirebaseResultOrErrorMessage} from "../firebasePromiseResults";
 import {wrapInputElement} from "./floatingInputWrapper";
+import {CallbackBindingsInterface} from "../CallbackBindingsInterface";
 
 
 //We JUST need a password form for changing passwords.
@@ -11,12 +10,12 @@ class EmailLoginInterface {
   container = document.createElement("div") //Container for the login interface
 
   emailEntryForm = document.createElement("form") //Form used to choose the email being used.
-  auth: Auth = null //Firebase Auth instance
+  callbacks: CallbackBindingsInterface = null //Callbacks to authentication library.
 
   onClose = null //Callback to be called when the interface is closed.
 
-  constructor(auth: Auth) {
-    this.auth = auth
+  constructor(callbacks: CallbackBindingsInterface) {
+    this.callbacks = callbacks
     this.container.classList.add("emailLoginInterface")
 
     this.emailEntryForm.addEventListener("submit", (function(e) {
@@ -66,7 +65,7 @@ class EmailLoginInterface {
   async continueWithEmail(emailAddress) {
     let loginProviders;
     try {
-      loginProviders = await fetchSignInMethodsForEmail(this.auth, emailAddress)
+      loginProviders = await this.callbacks.fetchSignInMethodsForEmail(emailAddress)
     }
     catch (e) {
       console.error(e)
@@ -105,7 +104,7 @@ class EmailLoginInterface {
     resetPasswordButton.innerHTML = "Reset Password"
     resetPasswordButton.type = "button"
     resetPasswordButton.addEventListener("click", (function() {
-      sendPasswordResetEmail(this.auth, emailAddress)
+      this.callbacks.sendPasswordResetEmail(emailAddress)
       errorMessage.innerText = `Password Reset Email Sent to ${emailAddress}. `
     }).bind(this))
 
@@ -145,23 +144,19 @@ class EmailLoginInterface {
       errorMessage.innerText = ""
       e.preventDefault()
       history.replaceState(null, "") //Emulate a navigation.
-      let firebasePromise;
+      let actionPromise;
       if (loginProviders.includes("password")) {
-        firebasePromise = signInWithEmailAndPassword(this.auth, emailAddress, passwordUnit.getValue());
+        actionPromise = this.callbacks.signInWithEmailPassword(emailAddress, passwordUnit.getValue());
       }
       else {
-        firebasePromise = createUserWithEmailAndPassword(this.auth, emailAddress, passwordUnit.getValue());
+        actionPromise = this.callbacks.createUserWithEmailPassword(emailAddress, passwordUnit.getValue());
       }
 
-      getFirebaseResultOrErrorMessage(firebasePromise).then((res) => {
-        if (typeof res === "string") {
-          errorMessage.innerText = res
-        }
-        else {
-          errorMessage.innerText = ""
-        }
+      actionPromise.then(() => {
+        errorMessage.innerText = ""
+      }, (e) => {
+        errorMessage.innerText = e.message
       })
-
     }).bind(this))
 
 

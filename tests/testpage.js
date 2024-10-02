@@ -36,7 +36,7 @@ document.body.append(targetElem)
 targetElem.style.display = "flex"
 
 
-import {Initialize_UI, injectDefaultStyles, Display_Templates} from "../dist/index.js";
+import {Initialize_UI, injectDefaultStyles, Display_Templates, createFirebaseBindings} from "../dist/index.js";
 
 let googleProvider = new GoogleAuthProvider()
 let appleProvider = new OAuthProvider()
@@ -62,7 +62,18 @@ let providers = [
   },
 ]
 
-Initialize_UI(auth, providers, targetElem)
+
+Initialize_UI(createFirebaseBindings(auth), providers, targetElem)
 
 injectDefaultStyles() //We can't do this immediately due to issues with hot reloading.
 document.documentElement.style.background = "#eee"
+
+
+
+
+//For developer - log user state changes to console and make logout methods accessible.
+auth.onAuthStateChanged(function(newAuth) {
+  console.log(newAuth)
+})
+
+window.auth = auth

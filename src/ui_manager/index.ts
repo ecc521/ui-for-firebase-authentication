@@ -1,17 +1,16 @@
-import {Auth, signInWithPopup} from "firebase/auth";
 import {SignInOption} from "../SignInOption";
 import {createButtonForProvider} from "./createProviderButton";
 import {EmailLoginInterface} from "./EmailLoginInterface";
-import {handleFirebasePromise} from "../firebasePromiseResults";
+import {CallbackBindingsInterface} from "../CallbackBindingsInterface";
 
 /**
  * Initializes the sign in UI. This will render the sign in options into the target element.
  *
- * @param auth The Firebase Auth instance to use for authentication.
+ * @param callbacks
  * @param signInOptions The sign in options to display to the user.
  * @param targetElement The element to render the UI into. This element will be emptied before rendering.
  * */
-function Initialize_UI(auth: Auth, signInOptions: SignInOption[], targetElement: HTMLElement) {
+function Initialize_UI(callbacks: CallbackBindingsInterface, signInOptions: SignInOption[], targetElement: HTMLElement) {
 
   if (signInOptions.length === 0) {
     throw new Error("No sign in options provided. ")
@@ -24,6 +23,8 @@ function Initialize_UI(auth: Auth, signInOptions: SignInOption[], targetElement:
   mainContainer.classList.add("uiForFirebaseLoginContainer")
   targetElement.appendChild(mainContainer)
 
+  let errorMessage = document.createElement("div")
+  errorMessage.classList.add("loginErrorMessage")
 
   //Create the buttons for sign in.
   for (let signInOption of signInOptions) {
@@ -36,17 +37,23 @@ function Initialize_UI(auth: Auth, signInOptions: SignInOption[], targetElement:
         //After the email login interface closes, we will recurse and regenerate the UI
         while (mainContainer.lastChild) {mainContainer.lastChild.remove()}
 
-        let emailLoginInterface = new EmailLoginInterface(auth)
+        let emailLoginInterface = new EmailLoginInterface(callbacks)
         mainContainer.appendChild(emailLoginInterface.container)
         emailLoginInterface.onClose = function() {
-          Initialize_UI(auth, signInOptions, targetElement)
+          Initialize_UI(callbacks, signInOptions, targetElement)
         }
       }
       else {
-        handleFirebasePromise(signInWithPopup(auth, signInOption.provider))
+        errorMessage.innerText = ""
+        callbacks.signInWithProvider(signInOption.provider).catch((e) => {
+          console.error(e)
+          errorMessage.innerText = e.message
+        })
       }
     })
   }
+
+  mainContainer.appendChild(errorMessage)
 }
 
 export {Initialize_UI}

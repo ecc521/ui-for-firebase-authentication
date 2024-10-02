@@ -7,4 +7,6 @@ import {SignInOption} from "./SignInOption";
 import {Initialize_UI} from "./ui_manager";
 import { injectDefaultStyles } from "./injectDefaultStyles"
 
-export {Initialize_UI, Display_Templates, SignInOption, SignInOptionDisplay, injectDefaultStyles }
+import {createFirebaseBindings} from "./firebaseBindings";
+
+export {Initialize_UI, Display_Templates, SignInOption, SignInOptionDisplay, injectDefaultStyles, createFirebaseBindings }
