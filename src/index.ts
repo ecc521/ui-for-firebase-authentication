@@ -8,5 +8,6 @@ import {Initialize_UI} from "./ui_manager";
 import { injectDefaultStyles } from "./injectDefaultStyles"
 
 import {createFirebaseBindings} from "./firebaseBindings";
+import {CallbackBindingsInterface} from "./CallbackBindingsInterface";
 
-export {Initialize_UI, Display_Templates, SignInOption, SignInOptionDisplay, injectDefaultStyles, createFirebaseBindings }
+export {CallbackBindingsInterface, Initialize_UI, Display_Templates, SignInOption, SignInOptionDisplay, injectDefaultStyles, createFirebaseBindings }

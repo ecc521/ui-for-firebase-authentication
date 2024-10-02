@@ -1,27 +1,5 @@
 # UI for Firebase Authentication
 
-
-
-
-
-
-
-- Plans for redesign
-
-This is ONLY a UI component (not Firebase specific)
-- We require a set of defined callback functions to be provided. 
-- We provide a template for those callback functions from firebase/auth and @capacitor-firebase/authentication
-
-This means that neither firebase/auth or @capacitor-firebase/authentication are actual dependencies (though they are 
-dev dependencies)
-
-
-
-
-
-
-
-
 ### Alternative to Firebase UI supporting Firebase v9+. 
 
 Key Features:
@@ -36,8 +14,18 @@ Requirements:
 Not yet available (Pull Requests welcome):
 - Custom password strength requirements (only minimum length supported)
 - Phone & Email Link Authentication
+- Anonymous User Upgrades
 - 2FA
 - Localization
+
+
+### How the Plugin Works
+
+This plugin provides a UI component that must be hooked up with bindings (see CallbackBindingsInterface).
+- Bindings are provided for Firebase Authentication (firebase/auth)
+- You can use this plugin with any authentication system provided that you implement CallbackBindingsInterface.
+
+
 
 
 
@@ -64,7 +52,7 @@ const auth = getAuth(app)
 ### Step 2: Create the UI Component
 ```javascript
 //Now initialize the UI package with the auth module. 
-import { initializeUI, injectDefaultStyles, Display_Templates } from "ui-for-firebase-authentication";
+import { initializeUI, injectDefaultStyles, Display_Templates, createFirebaseBindings } from "ui-for-firebase-authentication";
 
 injectDefaultStyles(); //Adds the default CSS for the sign in UI to the document. This uses CSSStyleSheet so will not violate CSP. 
 
@@ -96,5 +84,5 @@ let providers = [
   },
 ]
 
-initializeUI(auth, providers, targetElement);
+initializeUI(createFirebaseBindings(auth), providers, targetElement);
 ```
