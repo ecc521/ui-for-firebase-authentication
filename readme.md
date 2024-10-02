@@ -1,9 +1,32 @@
 # UI for Firebase Authentication
 
+
+
+
+
+
+
+- Plans for redesign
+
+This is ONLY a UI component (not Firebase specific)
+- We require a set of defined callback functions to be provided. 
+- We provide a template for those callback functions from firebase/auth and @capacitor-firebase/authentication
+
+This means that neither firebase/auth or @capacitor-firebase/authentication are actual dependencies (though they are 
+dev dependencies)
+
+
+
+
+
+
+
+
 ### Alternative to Firebase UI supporting Firebase v9+. 
 
 Key Features:
 - Support for Firebase v9+ (modular SDK)
+- - Support for native Firebase (including [@capacitor-firebase/authentication](https://www.npmjs.com/package/@capacitor-firebase/authentication)).
 
 Requirements:
 - Email Enumeration Protection is **NOT** supported, and must be disabled for this plugin to work

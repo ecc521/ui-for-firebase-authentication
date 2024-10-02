@@ -26,6 +26,7 @@
     "webpack-dev-server": "^5.1.0"
   },
   "peerDependencies": {
+    "@capacitor-firebase/authentication": "^6.1.0",
     "firebase": "^10.13.1"
   }
 }
