@@ -18,7 +18,7 @@ class EmailLoginInterface {
     this.callbacks = callbacks
     this.container.classList.add("emailLoginInterface")
 
-    this.emailEntryForm.addEventListener("submit", (function(e) {
+    this.emailEntryForm.addEventListener("submit", (function(e: Event) {
       e.preventDefault()
       history.replaceState(null, "") //Emulate a navigation.
       this.continueWithEmail(emailInput.value)
@@ -140,7 +140,7 @@ class EmailLoginInterface {
       errorMessage.innerText = "This account has no password. You must reset your password before you can log in."
     }
 
-    loginSubmissionForm.addEventListener("submit", (function(e) {
+    loginSubmissionForm.addEventListener("submit", (function(e: Event) {
       errorMessage.innerText = ""
       e.preventDefault()
       history.replaceState(null, "") //Emulate a navigation.
