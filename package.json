@@ -3,7 +3,9 @@
   "version": "2.0.1",
   "description": "UI for Firebase Authentication (Firebase UI alternative supporting v9+)",
   "main": "dist/index.js",
-  "scripts": {},
+  "scripts": {
+    "prepublish": "npx tsc"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ecc521/ui-for-firebase-authentication.git"
