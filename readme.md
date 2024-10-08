@@ -26,6 +26,10 @@ This plugin provides a UI component that must be hooked up with bindings (see Ca
 - You can use this plugin with any authentication system provided that you implement CallbackBindingsInterface.
 
 
+### Dark Mode
+
+This plugin does not adjust colors based on the user's system preferences, however you are welcome to provide your own CSS. 
+The color of .floatingLabel can be changed to make the text more visible on darker backgrounds. #ccc or similar is recommended. 
 
 
 
