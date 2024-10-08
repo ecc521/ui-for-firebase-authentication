@@ -110,7 +110,8 @@ function injectDefaultStyles() {
 .floatingInput {
     font-size: 1em;
     width: 100%;
-    padding: 8px 0;
+    margin-top: 4px;
+    padding: 4px 0;
     color: #333;
     border: none;
     border-bottom: 1px solid #ddd;
