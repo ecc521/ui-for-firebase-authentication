@@ -66,7 +66,7 @@ function injectDefaultStyles() {
   stylesheetTarget.insertRule(`
   .passwordEntryContainer {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: center;
   }`)
 
