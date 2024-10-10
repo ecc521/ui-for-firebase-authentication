@@ -10,4 +10,15 @@ import { injectDefaultStyles } from "./injectDefaultStyles"
 import {createFirebaseBindings} from "./firebaseBindings";
 import {CallbackBindingsInterface} from "./CallbackBindingsInterface";
 
-export {CallbackBindingsInterface, Initialize_UI, Display_Templates, SignInOption, SignInOptionDisplay, injectDefaultStyles, createFirebaseBindings }
+import {PasswordEntryBox, PasswordConfirmingUnit} from "./ui_manager/passwordUIClasses";
+
+export {
+  //Commonly used functions
+  Initialize_UI, injectDefaultStyles, createFirebaseBindings,
+  //Common Presets
+  Display_Templates,
+  //Potentially useful UI classes
+  PasswordEntryBox, PasswordConfirmingUnit,
+  //Typing
+  CallbackBindingsInterface ,SignInOption, SignInOptionDisplay,
+}
