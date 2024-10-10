@@ -69,10 +69,12 @@ class PasswordConfirmingUnit {
   constructor({hidden = true, minLength = 6, autoComplete = AutoCompleteValues.CURRENT_PASSWORD} = {}) {
     this.container = document.createElement("div")
 
-    this._passwordEntry = new PasswordEntryBox({hidden, minLength, placeholder: "Enter Password", autoComplete})
+    let isNewPassword = autoComplete === AutoCompleteValues.NEW_PASSWORD
+
+    this._passwordEntry = new PasswordEntryBox({hidden, minLength, placeholder: `Enter ${isNewPassword?"New ": ""}Password`, autoComplete})
     this.container.appendChild(this._passwordEntry.container)
 
-    this._passwordConfirm = new PasswordEntryBox({hidden, minLength, placeholder: "Confirm Password", autoComplete})
+    this._passwordConfirm = new PasswordEntryBox({hidden, minLength, placeholder: `Confirm ${isNewPassword?"New ": ""}Password`, autoComplete})
     this.container.appendChild(this._passwordConfirm.container)
 
     this._passwordEntry.input.addEventListener("keyup", this._validate.bind(this))
