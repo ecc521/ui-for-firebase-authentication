@@ -1,6 +1,6 @@
 {
   "name": "ui-for-firebase-authentication",
-  "version": "2.1.6",
+  "version": "2.1.7",
   "description": "UI for Firebase Authentication (Firebase UI alternative supporting v9+)",
   "main": "dist/index.js",
   "scripts": {

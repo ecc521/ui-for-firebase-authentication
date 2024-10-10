@@ -52,7 +52,11 @@ class PasswordEntryBox {
   }
 
   reset() {
-    this.input.value = ""
+    this.setValue("")
+  }
+
+  setValue(val: str) {
+    this.input.value = val
   }
 
   getValue() {
@@ -102,8 +106,8 @@ class PasswordConfirmingUnit {
   }
 
   setValue(val: str) {
-    this._passwordInput.input.value = val
-    this._passwordConfirm.input.value = val
+    this._passwordEntry.setValue(val)
+    this._passwordConfirm.setValue(val)
   }
 }
 
