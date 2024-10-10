@@ -102,8 +102,8 @@ class PasswordConfirmingUnit {
   }
 
   setValue(val: str) {
-    this._passwordInput.value = val
-    this._passwordConfirm.value = val
+    this._passwordInput.input.value = val
+    this._passwordConfirm.input.value = val
   }
 }
 
