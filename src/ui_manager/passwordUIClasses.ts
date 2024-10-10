@@ -100,6 +100,11 @@ class PasswordConfirmingUnit {
     }
     return this._passwordEntry.getValue()
   }
+
+  setValue(val: str) {
+    this._passwordInput.value = str
+    this._passwordConfirm.value = str
+  }
 }
 
 
