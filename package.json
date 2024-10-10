@@ -4,7 +4,7 @@
   "description": "UI for Firebase Authentication (Firebase UI alternative supporting v9+)",
   "main": "dist/index.js",
   "scripts": {
-    "prepublish": "npx tsc -d"
+    "prepare": "npx tsc -d"
   },
   "repository": {
     "type": "git",
