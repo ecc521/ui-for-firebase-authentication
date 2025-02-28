@@ -1,6 +1,6 @@
 {
   "name": "ui-for-firebase-authentication",
-  "version": "2.1.7",
+  "version": "2.2.0",
   "description": "UI for Firebase Authentication (Firebase UI alternative supporting v9+)",
   "main": "dist/index.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "webpack-dev-server": "^5.1.0"
   },
   "peerDependencies": {
-    "@capacitor-firebase/authentication": "^6.1.0",
+    "@capacitor-firebase/authentication": "^7.1.0",
     "firebase": "^10.13.1"
   }
 }
